@@ -2,53 +2,39 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>RPG Batalha Hostil</title>
+<title>RPG Os Guri</title>
 
 <style>
 body {
-    background: #0f0f0f;
+    background-color: black;
     color: #00ff88;
-    font-family: Arial, sans-serif;
+    font-family: Arial;
     text-align: center;
-}
-
-.container {
-    margin-top: 50px;
 }
 
 button {
     padding: 10px 20px;
     margin: 10px;
-    font-size: 16px;
     background: black;
     color: #00ff88;
     border: 2px solid #00ff88;
     cursor: pointer;
-    transition: 0.3s;
-}
-
-button:hover {
-    background: #00ff88;
-    color: black;
 }
 
 #log {
     margin-top: 20px;
+    border: 2px solid #00ff88;
     height: 200px;
     overflow-y: auto;
-    border: 2px solid #00ff88;
-    padding: 10px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<h1>⚔️ RPG Os Guri ⚔️</h1>
 
-<h1>⚔️ RPG Batalha Hostil ⚔️</h1>
-
-<div id="personagemEscolha">
+<div id="inicio">
     <h3>Escolha seu personagem:</h3>
     <button onclick="escolher('Guerreiro')">Guerreiro</button>
     <button onclick="escolher('Mago')">Mago</button>
@@ -57,20 +43,15 @@ button:hover {
 
 <div id="jogo" style="display:none;">
     <p id="status"></p>
-
     <button onclick="atacar()">Atacar</button>
-    <button onclick="especial()">Ataque Especial</button>
-
+    <button onclick="especial()">Especial</button>
     <div id="log"></div>
 </div>
 
-</div>
-
 <script>
-let vidaJogador;
-let ataqueJogador;
+let vidaJogador = 0;
+let ataqueJogador = 0;
 let vidaNPC = 150;
-let ataqueNPC = 30;
 
 function escolher(tipo) {
 
@@ -87,11 +68,11 @@ function escolher(tipo) {
         ataqueJogador = 40;
     }
 
-    document.getElementById("personagemEscolha").style.display = "none";
+    document.getElementById("inicio").style.display = "none";
     document.getElementById("jogo").style.display = "block";
 
-    atualizarStatus();
-    log("😈 Um NPC EXTREMAMENTE hostil apareceu!");
+    atualizar();
+    log("😈 Um NPC hostil apareceu!");
 }
 
 function atacar() {
@@ -102,47 +83,38 @@ function atacar() {
 }
 
 function especial() {
-    let dano = ataqueJogador + Math.floor(Math.random() * 35);
+    let dano = ataqueJogador + Math.floor(Math.random() * 30);
     vidaNPC -= dano;
-    log("💥 ATAQUE ESPECIAL causou " + dano + " de dano!");
+    log("💥 Especial causou " + dano + " de dano!");
     turnoNPC();
 }
 
 function turnoNPC() {
-
     if (vidaNPC <= 0) {
-        log("🏆 Você venceu o NPC!");
-        desativar();
+        log("🏆 Você venceu!");
         return;
     }
 
-    let danoNPC = ataqueNPC + Math.floor(Math.random() * 20);
-    vidaJogador -= danoNPC;
-    log("😈 NPC atacou violentamente e causou " + danoNPC + " de dano!");
+    let dano = 30 + Math.floor(Math.random() * 20);
+    vidaJogador -= dano;
+    log("😈 NPC causou " + dano + " de dano!");
 
     if (vidaJogador <= 0) {
         log("💀 Você foi derrotado!");
-        desativar();
     }
 
-    atualizarStatus();
+    atualizar();
 }
 
-function atualizarStatus() {
+function atualizar() {
     document.getElementById("status").innerHTML =
-        "❤️ Sua Vida: " + vidaJogador +
-        " | 😈 Vida NPC: " + vidaNPC;
+        "❤️ Vida: " + vidaJogador + " | 😈 Vida NPC: " + vidaNPC;
 }
 
-function log(texto) {
+function log(msg) {
     let area = document.getElementById("log");
-    area.innerHTML += texto + "<br>";
+    area.innerHTML += msg + "<br>";
     area.scrollTop = area.scrollHeight;
-}
-
-function desativar() {
-    let botoes = document.querySelectorAll("button");
-    botoes.forEach(btn => btn.disabled = true);
 }
 </script>
 
