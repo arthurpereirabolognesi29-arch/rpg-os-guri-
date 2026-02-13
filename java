@@ -1,138 +1,126 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
 import java.util.Random;
+import java.util.Scanner;
 
-public class RPGGame extends JFrame {
+public class RPGOsGuri {
 
-    private int vidaJogador;
-    private int ataqueJogador;
-    private int vidaNPC = 120;
-    private int ataqueNPC = 25;
+    static Scanner scanner = new Scanner(System.in);
+    static Random random = new Random();
 
-    private JTextArea areaTexto;
-    private JButton btnAtacar;
-    private JButton btnEspecial;
-
-    private Random random = new Random();
-
-    public RPGGame() {
-
-        setTitle("RPG Batalha Hostil");
-        setSize(500, 400);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-
-        escolherPersonagem();
-        criarInterface();
-
-        setVisible(true);
-    }
-
-    private void escolherPersonagem() {
-
-        String[] personagens = {"Guerreiro", "Mago", "Assassino"};
-
-        String escolha = (String) JOptionPane.showInputDialog(
-                null,
-                "Escolha seu personagem:",
-                "Seleção",
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                personagens,
-                personagens[0]
-        );
-
-        if (escolha == null) System.exit(0);
-
-        switch (escolha) {
-            case "Guerreiro":
-                vidaJogador = 150;
-                ataqueJogador = 20;
-                break;
-            case "Mago":
-                vidaJogador = 100;
-                ataqueJogador = 30;
-                break;
-            case "Assassino":
-                vidaJogador = 90;
-                ataqueJogador = 35;
-                break;
-        }
-    }
-
-    private void criarInterface() {
-
-        areaTexto = new JTextArea();
-        areaTexto.setEditable(false);
-        areaTexto.setFont(new Font("Arial", Font.BOLD, 14));
-        areaTexto.setBackground(Color.BLACK);
-        areaTexto.setForeground(Color.GREEN);
-
-        btnAtacar = new JButton("Atacar");
-        btnEspecial = new JButton("Ataque Especial");
-
-        btnAtacar.addActionListener(e -> atacar());
-        btnEspecial.addActionListener(e -> ataqueEspecial());
-
-        JPanel painelBotoes = new JPanel();
-        painelBotoes.add(btnAtacar);
-        painelBotoes.add(btnEspecial);
-
-        add(new JScrollPane(areaTexto), BorderLayout.CENTER);
-        add(painelBotoes, BorderLayout.SOUTH);
-
-        atualizarTexto("⚔️ Um NPC extremamente hostil apareceu!");
-    }
-
-    private void atacar() {
-        int dano = ataqueJogador + random.nextInt(10);
-        vidaNPC -= dano;
-
-        atualizarTexto("Você causou " + dano + " de dano!");
-
-        turnoNPC();
-    }
-
-    private void ataqueEspecial() {
-        int dano = ataqueJogador + random.nextInt(25);
-        vidaNPC -= dano;
-
-        atualizarTexto("💥 ATAQUE ESPECIAL causou " + dano + " de dano!");
-
-        turnoNPC();
-    }
-
-    private void turnoNPC() {
-
-        if (vidaNPC <= 0) {
-            atualizarTexto("🏆 Você venceu o NPC!");
-            desativarBotoes();
-            return;
-        }
-
-        int danoNPC = ataqueNPC + random.nextInt(15);
-        vidaJogador -= danoNPC;
-
-        atualizarTexto("😈 NPC atacou violentamente e causou " + danoNPC + " de dano!");
-
-        if (vidaJogador <= 0) {
-            atualizarTexto("💀 Você foi derrotado!");
-            desativarBotoes();
-        }
-    }
-
-    private void atualizarTexto(String mensagem) {
-        areaTexto.append("\n" + mensagem);
-        areaTexto.append("\nSua vida: " + vidaJogador + " | Vida NPC: " + vidaNPC + "\n");
-    }
-
-    private void desativarBotoes() {
-        btnAtacar.setEnabled(false);
-        btnEspecial.setEnabled(false);
-    }
+    static int vidaJogador;
+    static int ataqueJogador;
+    static int defesaJogador;
+    static int vidaNPC = 200;
+    static int ataqueNPC = 35;
 
     public static void main(String[] args) {
-        new RPGGame();
+
+        System.out.println("=== ⚔️ RPG OS GURI ⚔️ ===");
+        escolherPersonagem();
+
+        while (vidaJogador > 0 && vidaNPC > 0) {
+
+            System.out.println("\nSua vida: " + vidaJogador + " | Vida NPC: " + vidaNPC);
+            System.out.println("1 - Atacar");
+            System.out.println("2 - Defesa");
+            System.out.println("3 - Ataque Especial");
+
+            int escolha = scanner.nextInt();
+
+            switch (escolha) {
+                case 1:
+                    atacar();
+                    break;
+                case 2:
+                    defender();
+                    break;
+                case 3:
+                    especial();
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
+            }
+
+            if (vidaNPC > 0) turnoNPC();
+        }
+
+        if (vidaJogador <= 0) {
+            System.out.println("\n💀 Você foi destruído pelo NPC!");
+        } else {
+            System.out.println("\n🏆 VOCÊ DERROTOU O NPC HOSTIL!");
+        }
+    }
+
+    static void escolherPersonagem() {
+
+        System.out.println("Escolha seu personagem:");
+        System.out.println("1 - Guerreiro (vida alta)");
+        System.out.println("2 - Mago (ataque alto)");
+        System.out.println("3 - Assassino (crítico alto)");
+
+        int escolha = scanner.nextInt();
+
+        switch (escolha) {
+            case 1:
+                vidaJogador = 250;
+                ataqueJogador = 25;
+                defesaJogador = 10;
+                break;
+            case 2:
+                vidaJogador = 180;
+                ataqueJogador = 40;
+                defesaJogador = 5;
+                break;
+            case 3:
+                vidaJogador = 150;
+                ataqueJogador = 35;
+                defesaJogador = 8;
+                break;
+            default:
+                System.out.println("Escolha inválida. Guerreiro selecionado.");
+                vidaJogador = 250;
+                ataqueJogador = 25;
+                defesaJogador = 10;
+        }
+    }
+
+    static void atacar() {
+        int dano = ataqueJogador + random.nextInt(20);
+
+        // Chance de crítico
+        if (random.nextInt(100) < 25) {
+            dano *= 2;
+            System.out.println("💥 CRÍTICO!");
+        }
+
+        vidaNPC -= dano;
+        System.out.println("Você causou " + dano + " de dano!");
+    }
+
+    static void especial() {
+        int dano = ataqueJogador + random.nextInt(50);
+        vidaNPC -= dano;
+        vidaJogador -= 10; // custo de energia
+
+        System.out.println("🔥 Ataque Especial causou " + dano + " de dano!");
+        System.out.println("Você perdeu 10 de vida pelo esforço!");
+    }
+
+    static void defender() {
+        int cura = defesaJogador + random.nextInt(15);
+        vidaJogador += cura;
+        System.out.println("🛡️ Você recuperou " + cura + " de vida!");
+    }
+
+    static void turnoNPC() {
+        int dano = ataqueNPC + random.nextInt(25);
+
+        // NPC também pode critar
+        if (random.nextInt(100) < 30) {
+            dano *= 2;
+            System.out.println("😈 NPC deu CRÍTICO!");
+        }
+
+        vidaJogador -= dano;
+        System.out.println("NPC atacou e causou " + dano + " de dano!");
     }
 }
