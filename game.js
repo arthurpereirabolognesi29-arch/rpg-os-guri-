@@ -22,6 +22,7 @@ function escolherClasse(tipo) {
     if (tipo === "mago") {
         vidaMax = 120;
         forca = 40;
+        escudo = 3;
     }
 
     if (tipo === "cavaleiro") {
@@ -33,6 +34,7 @@ function escolherClasse(tipo) {
     if (tipo === "ladrao") {
         vidaMax = 140;
         forca = 35;
+        escudo = 5;
     }
 
     vida = vidaMax;
@@ -81,4 +83,21 @@ function mover(direcao) {
     if (direcao === "d") novoX++;
 
     if (
-        mapa[novoY]
+        mapa[novoY] !== undefined &&
+        mapa[novoY][novoX] !== undefined &&
+        mapa[novoY][novoX] === 0
+    ) {
+        playerX = novoX;
+        playerY = novoY;
+    }
+
+    desenharMapa();
+}
+
+function atualizarStatus() {
+    document.getElementById("status").innerHTML =
+        "Vida: " + vida + "/" + vidaMax +
+        "<br>Força: " + forca +
+        "<br>Escudo: " + escudo +
+        "<br>XP: " + xp;
+}
