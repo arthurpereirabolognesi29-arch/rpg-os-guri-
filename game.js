@@ -74,10 +74,11 @@ function mover(direcao) {
     if (direcao === "a") novoX--;
     if (direcao === "d") novoX++;
 
-    if (mapa[novoY][novoX] !== "#") {
-        playerX = novoX;
-        playerY = novoY;
-    }
+   if (
+    mapa[novoY] &&
+    mapa[novoY][novoX] &&
+    mapa[novoY][novoX] !== "#"
+) {
 
     if (Math.random() < 0.3) {
         batalha();
@@ -127,4 +128,5 @@ function atualizarStatus() {
 function log(msg) {
     document.getElementById("log").innerHTML += msg + "<br>";
 }
+
 
