@@ -8,13 +8,13 @@ let playerX = 1;
 let playerY = 1;
 
 let mapa = [
-"##########",
-"#........#",
-"#..##....#",
-"#........#",
-"#....##..#",
-"#........#",
-"##########"
+[1,1,1,1,1,1,1,1,1,1],
+[1,0,0,0,0,0,0,0,0,1],
+[1,0,1,1,0,0,0,0,0,1],
+[1,0,0,0,0,0,0,0,0,1],
+[1,0,0,0,1,1,0,0,0,1],
+[1,0,0,0,0,0,0,0,0,1],
+[1,1,1,1,1,1,1,1,1,1]
 ];
 
 function escolherClasse(tipo) {
@@ -46,22 +46,28 @@ function escolherClasse(tipo) {
 
 function desenharMapa() {
 
-    let mapaHTML = "";
+    let miniMapa = document.getElementById("miniMapa");
+    miniMapa.innerHTML = "";
 
     for (let y = 0; y < mapa.length; y++) {
         for (let x = 0; x < mapa[y].length; x++) {
 
-            if (x === playerX && y === playerY) {
-                mapaHTML += "P ";
+            let tile = document.createElement("div");
+            tile.classList.add("tile");
+
+            if (mapa[y][x] === 1) {
+                tile.classList.add("parede");
             } else {
-                mapaHTML += mapa[y][x] + " ";
+                tile.classList.add("chao");
             }
 
-        }
-        mapaHTML += "<br>";
-    }
+            if (x === playerX && y === playerY) {
+                tile.classList.add("player");
+            }
 
-    document.getElementById("miniMapa").innerHTML = mapaHTML;
+            miniMapa.appendChild(tile);
+        }
+    }
 }
 
 function mover(direcao) {
@@ -74,59 +80,5 @@ function mover(direcao) {
     if (direcao === "a") novoX--;
     if (direcao === "d") novoX++;
 
-   if (
-    mapa[novoY] &&
-    mapa[novoY][novoX] &&
-    mapa[novoY][novoX] !== "#"
-) {
-
-    if (Math.random() < 0.3) {
-        batalha();
-    }
-
-    desenharMapa();
-    atualizarStatus();
-}
-
-function batalha() {
-
-    log("😈 Inimigo apareceu!");
-
-    let vidaInimigo = 100;
-
-    while (vida > 0 && vidaInimigo > 0) {
-
-        let dano = forca + Math.floor(Math.random() * 15);
-        vidaInimigo -= dano;
-
-        log("Você causou " + dano + " de dano!");
-
-        if (vidaInimigo > 0) {
-            let danoInimigo = 20 - escudo;
-            if (danoInimigo < 0) danoInimigo = 0;
-
-            vida -= danoInimigo;
-            log("Inimigo causou " + danoInimigo + " de dano!");
-        }
-    }
-
-    if (vida > 0) {
-        xp += 50;
-        log("👾 Inimigo derrotado! +50 XP");
-    }
-}
-
-function atualizarStatus() {
-
-    document.getElementById("status").innerHTML =
-        "Vida: " + vida + "/" + vidaMax +
-        "<br>Força: " + forca +
-        "<br>Escudo: " + escudo +
-        "<br>XP: " + xp;
-}
-
-function log(msg) {
-    document.getElementById("log").innerHTML += msg + "<br>";
-}
-
-
+    if (
+        mapa[novoY]
