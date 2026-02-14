@@ -42,3 +42,25 @@ button:hover {
     height: 150px;
     overflow-y: auto;
 }
+#miniMapa {
+    display: grid;
+    grid-template-columns: repeat(10, 20px);
+    gap: 2px;
+}
+
+.tile {
+    width: 20px;
+    height: 20px;
+}
+
+.parede {
+    background-color: #333;
+}
+
+.chao {
+    background-color: black;
+}
+
+.player {
+    background-color: red;
+}
