@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>RPG Os Guri</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>⚔️ RPG Os Guri ⚔️</h1>
+
+<div id="classeEscolha">
+    <h3>Escolha sua classe:</h3>
+    <button onclick="escolherClasse('mago')">Mago</button>
+    <button onclick="escolherClasse('cavaleiro')">Cavaleiro</button>
+    <button onclick="escolherClasse('ladrao')">Ladrão</button>
+</div>
+
+<div id="gameArea" style="display:none;">
+    <div id="topArea">
+        <div id="miniMapa"></div>
+        <div id="status"></div>
+    </div>
+
+    <div id="controls">
+        <button onclick="mover('w')">↑</button><br>
+        <button onclick="mover('a')">←</button>
+        <button onclick="mover('s')">↓</button>
+        <button onclick="mover('d')">→</button>
+    </div>
+
+    <div id="log"></div>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>
