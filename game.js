@@ -12,7 +12,7 @@ let mapa = [
 "#........#",
 "#..##....#",
 "#........#",
-"#....##...#",
+"#....##..#",
 "#........#",
 "##########"
 ];
@@ -127,3 +127,4 @@ function atualizarStatus() {
 function log(msg) {
     document.getElementById("log").innerHTML += msg + "<br>";
 }
+
